@@ -121,5 +121,4 @@ const { items } = Astro.props;
   [...sections, ...document.querySelectorAll('.section-content h3[id], .section-content [data-nav-target]')].forEach((section) => observer.observe(section));
   document.querySelectorAll('[data-subnav-link]').forEach((link) => link.addEventListener('click', () => { document.querySelectorAll('[data-subnav-link]').forEach((item) => item.toggleAttribute('aria-current', item === link)); }));
   document.querySelectorAll('[data-mobile-link]').forEach((link) => link.addEventListener('click', () => { const details = link.closest('details'); if (details) details.removeAttribute('open'); }));
-  window.addEventListener('hashchange', () => highlightTarget(document.getElementById(window.location.hash.slice(1))));
 </script>

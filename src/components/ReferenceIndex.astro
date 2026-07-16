@@ -22,7 +22,7 @@ const internalLinks: LinkItem[] = [
 ];
 ---
 <section class="reference-index" aria-labelledby="reference-index-title" data-reference-index>
-  <div class="reference-index-heading"><span class="eyebrow">ОГИБДД-П / содержание</span><h2 id="reference-index-title">Единый информационный раздел ДПС ОГИБДД по г. Приволжску</h2><p>Нормативные документы вынесены на форум, рабочие материалы собраны ниже на этой странице.</p></div>
+  <div class="reference-index-heading"><span class="eyebrow">ОГИБДД-П / содержание</span><h2 id="reference-index-title">Информационный раздел ДПС ОГИБДД по г. Приволжску</h2></div>
   <div class="reference-columns">
     <div class="reference-column"><h3>Нормативные документы</h3>{externalLinks.map((link) => <a class="reference-link" href={link.href} target="_blank" rel="noreferrer"><span>{link.label}</span><span class="reference-arrow">↗</span></a>)}</div>
     <div class="reference-column"><h3>Разделы справочника</h3>{internalLinks.map((link) => <a class="reference-link" href={link.href}><span>{link.label}</span><span class="reference-arrow">→</span></a>)}</div>

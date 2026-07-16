@@ -97,7 +97,20 @@ const { items } = Astro.props;
   const carPlaceholder = assetPath('/images/autopark/placeholder-car.svg');
   document.querySelectorAll('[data-car-image]').forEach((image) => image.addEventListener('error', () => { image.dataset.carFailed = 'true'; image.src = carPlaceholder; }));
   const carImages = [...document.querySelectorAll('[data-car-src]')];
-  carImages.forEach((image, index) => window.setTimeout(() => { if (image.dataset.carFailed !== 'true') { image.src = image.dataset.carSrc; image.dataset.carLoaded = 'true'; } }, 180 + index * 100));
+  const isMobileViewport = window.matchMedia('(max-width: 700px)').matches;
+  carImages.forEach((image, index) => window.setTimeout(() => {
+    if (image.dataset.carFailed === 'true') return;
+    const source = image.dataset.carSrc;
+    if (!source || !isMobileViewport) { image.src = source; image.dataset.carLoaded = 'true'; return; }
+    const preload = new Image();
+    preload.decoding = 'async';
+    preload.onload = async () => {
+      try { await preload.decode?.(); } catch {}
+      if (image.dataset.carFailed !== 'true') { image.src = source; image.dataset.carLoaded = 'true'; }
+    };
+    preload.onerror = () => { image.dataset.carFailed = 'true'; image.src = carPlaceholder; };
+    preload.src = source;
+  }, 180 + index * 100));
   document.querySelectorAll('[data-post-image]').forEach((image) => image.addEventListener('error', () => { image.src = assetPath('/images/posts/placeholder-post.svg'); }, { once: true }));
   const topButton = document.querySelector('[data-back-top]');
   window.addEventListener('scroll', () => topButton?.toggleAttribute('data-visible', window.scrollY > 480), { passive: true });

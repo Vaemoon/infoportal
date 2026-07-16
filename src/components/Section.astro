@@ -1,0 +1,11 @@
+---
+type Props = { id: string; title: string; description: string; index: string };
+const { id, title, description, index } = Astro.props;
+---
+<section id={id} class="doc-section" data-section={id} data-search-title={title}>
+  <div class="section-heading">
+    <span class="section-index">{index}</span>
+    <div><h2>{title}</h2><p>{description}</p></div>
+  </div>
+  <div class="section-content"><slot /></div>
+</section>

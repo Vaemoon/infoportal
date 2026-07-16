@@ -1,0 +1,10 @@
+---
+type Variant = 'info' | 'warning' | 'note';
+type Props = { variant?: Variant; title: string };
+const { variant = 'info', title } = Astro.props;
+const icon = variant === 'warning' ? '!' : variant === 'note' ? 'i' : '✓';
+---
+<aside class={`callout callout-${variant}`}>
+  <span class="callout-icon" aria-hidden="true">{icon}</span>
+  <div><strong>{title}</strong><div class="callout-body"><slot /></div></div>
+</aside>

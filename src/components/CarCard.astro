@@ -1,0 +1,11 @@
+---
+type Props = { name: string; image?: string; access: string; purpose?: string; department: string; departmentLabel?: string; notes?: string };
+const { name, image = '/images/autopark/placeholder-car.svg', access, department, departmentLabel = 'Маркировка экипажа', notes } = Astro.props;
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+const placeholderImage = assetPath('/images/autopark/placeholder-car.svg');
+const imagePath = image.startsWith('/') ? assetPath(image) : image;
+---
+<article class="car-card" id={`car-${name.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-')}`} data-search-item>
+  <div class="media-frame"><img src={placeholderImage} data-car-src={imagePath} alt={`Иллюстрация: ${name}`} loading="eager" decoding="async" fetchpriority="low" data-car-image /></div>
+  <div class="card-body"><h3>{name}</h3><dl class="meta-list"><div><dt>Доступ</dt><dd>{access}</dd></div><div><dt>{departmentLabel}</dt><dd>{department}</dd></div></dl>{notes && <p class="card-note">{notes}</p>}</div>
+</article>

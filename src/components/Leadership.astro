@@ -1,0 +1,49 @@
+---
+type Person = { id: string; name: string; position: string; rank?: string; vacant?: boolean };
+type Department = { code: string; title: string; people: Person[] };
+
+const vkSearch = (name: string) => `https://vk.com/search?c%5Bq%5D=${encodeURIComponent(name)}&c%5Bsection%5D=people`;
+const topDepartments: Department[] = [
+  { code: 'ОКН', title: 'Отдел кадрового надзора', people: [
+    { id: 'denis-kingsman', name: 'Denis_Kingsman', position: 'Начальник ОКН / заместитель начальника ДПС', rank: 'Полковник В.С.' },
+    { id: 'vladimir-kotik', name: 'Vladimir_Kotik', position: 'Заместитель начальника ОКН', rank: 'Подполковник В.С.' },
+    { id: 'egor-schneiderhan', name: 'Egor_Schneiderhan', position: 'Инспектор ОКН', rank: 'Майор В.С.' },
+  ] },
+  { code: 'ОСР', title: 'Отдельная специальная рота', people: [
+    { id: 'karl-daimler', name: 'Karl_Daimler', position: 'Командир ОСР', rank: 'Полковник полиции' },
+    { id: 'egor-dashchonok', name: 'Egor_Dashchonok', position: 'Заместитель командира ОСР', rank: 'Подполковник полиции' },
+    { id: 'osr-vacant', name: 'Не назначен', position: 'Старший инспектор по ОП', vacant: true },
+  ] },
+  { code: 'ОБ', title: 'Отдельный батальон', people: [
+    { id: 'ilia-vladimirov', name: 'Ilia_Vladimirov', position: 'Командир ОБ', rank: 'Полковник полиции' },
+    { id: 'nikolay-kitonov', name: 'Nikolay_Kitonov', position: 'Заместитель командира ОБ', rank: 'Подполковник полиции' },
+    { id: 'dmitriy-soldatikov', name: 'Dmitriy_Soldatikov', position: 'Командир первого взвода', rank: 'Майор полиции' },
+    { id: 'ob-vacant', name: 'Не назначен', position: 'Командир второго взвода', rank: 'Майор полиции', vacant: true },
+  ] },
+];
+const lowerDepartments: Department[] = [
+  { code: 'ЦПС', title: 'Центр профессиональной подготовки', people: [
+    { id: 'albert-vorobyev', name: 'Albert_Vorobyev', position: 'Начальник ЦПС', rank: 'Полковник полиции' },
+    { id: 'ivan-lambert', name: 'Ivan_Lambert', position: 'Начальник УК — учебного корпуса', rank: 'Подполковник полиции' },
+    { id: 'cps-vacant', name: 'Не назначен', position: 'Начальник СК', rank: 'Подполковник полиции', vacant: true },
+    { id: 'artemiy-baranov', name: 'Artemiy_Baranov', position: 'Куратор УК', rank: 'Майор полиции' },
+  ] },
+  { code: 'ОИиОС', title: 'Отдел информирования', people: [
+    { id: 'oiios-vacant', name: 'Не назначен', position: 'Начальник ОИиОС', rank: 'Подполковник В.С.', vacant: true },
+  ] },
+];
+
+---
+<div class="leadership-tree" id="leadership-tree" data-nav-target>
+  <a class="leadership-chief" id="leadership-german-voronin" data-search-item href={vkSearch('German_Voronin')} target="_blank" rel="noreferrer"><div class="leadership-name">German_Voronin</div><div class="leadership-position">Начальник ДПС</div><div class="leadership-rank">Генерал-майор полиции</div></a>
+  <div class="leadership-trunk" aria-hidden="true"></div>
+  <div class="leadership-rows">
+    <div class="leadership-row leadership-row-three">
+      {topDepartments.map((department) => <article class="leadership-department"><header class="leadership-department-header"><strong>{department.code}</strong><span>{department.title}</span></header><div class="leadership-chain">{department.people.map((person) => person.vacant ? <div class="leadership-person vacant" id={`leadership-${person.id}`} data-search-item><div class="leadership-name">{person.name}</div><div class="leadership-position">{person.position}</div>{person.rank && <div class="leadership-rank">{person.rank}</div>}</div> : <a class="leadership-person" id={`leadership-${person.id}`} data-search-item href={vkSearch(person.name)} target="_blank" rel="noreferrer"><div class="leadership-name">{person.name}</div><div class="leadership-position">{person.position}</div>{person.rank && <div class="leadership-rank">{person.rank}</div>}</a>)}</div></article>)}
+    </div>
+    <div class="leadership-second-connector" aria-hidden="true"></div>
+    <div class="leadership-row leadership-row-two">
+      {lowerDepartments.map((department) => <article class="leadership-department"><header class="leadership-department-header"><strong>{department.code}</strong><span>{department.title}</span></header><div class="leadership-chain">{department.people.map((person) => person.vacant ? <div class="leadership-person vacant" id={`leadership-${person.id}`} data-search-item><div class="leadership-name">{person.name}</div><div class="leadership-position">{person.position}</div>{person.rank && <div class="leadership-rank">{person.rank}</div>}</div> : <a class="leadership-person" id={`leadership-${person.id}`} data-search-item href={vkSearch(person.name)} target="_blank" rel="noreferrer"><div class="leadership-name">{person.name}</div><div class="leadership-position">{person.position}</div>{person.rank && <div class="leadership-rank">{person.rank}</div>}</a>)}</div></article>)}
+    </div>
+  </div>
+</div>

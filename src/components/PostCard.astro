@@ -1,0 +1,7 @@
+---
+type Props = { title: string; image?: string; location: string; code: string };
+const { title, image = '/images/posts/placeholder-post.svg', location } = Astro.props;
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+const imagePath = image.startsWith('/') ? assetPath(image) : image;
+---
+<article class="post-card" id={`post-${title.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-')}`} data-search-item><div class="post-image"><img src={imagePath} alt={`Схема расположения: ${title}`} loading="lazy" decoding="async" data-post-image /></div><div class="post-body"><h3>{title}</h3><p class="post-location">{location}</p></div></article>

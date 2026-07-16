@@ -1,0 +1,125 @@
+---
+import Sidebar from './Sidebar.astro';
+import MobileNav from './MobileNav.astro';
+import SearchBox from './SearchBox.astro';
+import Icon from './Icon.astro';
+import ReferenceIndex from './ReferenceIndex.astro';
+import type { NavigationItem } from '../data/navigation';
+type Props = { items: NavigationItem[] };
+const { items } = Astro.props;
+---
+<div class="app-shell" id="top">
+  <Sidebar items={items} />
+  <MobileNav items={items} />
+  <main class="main-content">
+    <div class="content-topbar"><div><span class="eyebrow">ДПС ОГИБДД / Приволжск</span><h1>Информационный раздел ОГИБДД-П</h1></div></div>
+    <div class="search-stack">
+      <div class="search-row"><SearchBox /><span class="search-hint">Ищет по заголовкам и тексту разделов</span></div>
+      <div class="search-results" data-search-results hidden><div class="search-results-head"><span data-search-results-count>Результаты поиска</span><button type="button" data-search-clear>Очистить</button></div><div class="search-results-list" data-search-results-list></div></div>
+    </div>
+    <ReferenceIndex />
+    <div class="search-empty" data-search-empty hidden>Ничего не найдено. Попробуйте другой запрос.</div>
+    <slot />
+    <footer class="site-footer"><span>ОГИБДД-П / информационный раздел</span><span>by Yve Furley</span></footer>
+  </main>
+  <button class="back-to-top" type="button" data-back-top aria-label="Вернуться наверх"><Icon name="arrow-up" size={17} /></button>
+</div>
+
+<script is:inline>
+  const search = document.querySelector('[data-search]') || document.querySelector('#section-search');
+  const sections = [...document.querySelectorAll('[data-section]')];
+  const empty = document.querySelector('[data-search-empty]');
+  const resultsPanel = document.querySelector('[data-search-results]');
+  const resultsList = document.querySelector('[data-search-results-list]');
+  const resultsCount = document.querySelector('[data-search-results-count]');
+  const referenceIndex = document.querySelector('[data-reference-index]');
+  const searchableItems = [...document.querySelectorAll('[data-search-item], [data-copy-line], [data-bind-line], .template-list p, .section-content table tr')];
+  let generatedSearchId = 0;
+  const getText = (element) => element.textContent.replace(/\s+/g, ' ').trim();
+  const getSnippet = (text, query) => { const clean = text.replace(/\s+/g, ' ').trim(); const index = clean.toLocaleLowerCase().indexOf(query); if (index < 0) return clean.slice(0, 150); return `${index > 48 ? '…' : ''}${clean.slice(Math.max(0, index - 48), index + 112)}${clean.length > index + 112 ? '…' : ''}`; };
+  const ensureSearchId = (element) => { if (!element.id) element.id = `search-target-${++generatedSearchId}`; return element.id; };
+  const getSearchTitle = (element) => element.querySelector('h3, .leadership-name, .copy-line code, .bind-line code, strong')?.textContent?.trim() || getText(element).slice(0, 90);
+  const highlightTarget = (target) => { if (!target) return; target.classList.add('search-hit'); window.setTimeout(() => target.classList.remove('search-hit'), 1800); };
+  const updateSearch = (value) => {
+    const query = value.trim().toLocaleLowerCase();
+    const matches = [];
+    sections.forEach((section) => {
+      const sectionText = getText(section).toLocaleLowerCase();
+      const items = searchableItems.filter((item) => section.contains(item));
+      if (!query) { section.removeAttribute('hidden'); items.forEach((item) => item.removeAttribute('hidden')); return; }
+      const itemMatches = items.filter((item) => getText(item).toLocaleLowerCase().includes(query));
+      const sectionMatch = sectionText.includes(query);
+      section.toggleAttribute('hidden', !sectionMatch);
+      if (itemMatches.length) {
+        items.forEach((item) => item.toggleAttribute('hidden', !itemMatches.includes(item)));
+        itemMatches.forEach((item) => matches.push({ target: ensureSearchId(item), title: getSearchTitle(item), snippet: getSnippet(getText(item), query) }));
+      } else if (sectionMatch) {
+        items.forEach((item) => item.removeAttribute('hidden'));
+        const heading = [...section.querySelectorAll('h3[id]')].find((item) => getText(item).toLocaleLowerCase().includes(query));
+        const target = heading || section;
+        matches.push({ target: ensureSearchId(target), title: getText(heading || section.querySelector('h2')) || 'Раздел', snippet: getSnippet(getText(section), query) });
+      } else items.forEach((item) => item.removeAttribute('hidden'));
+    });
+    if (resultsList) { resultsList.replaceChildren(...matches.map((result) => { const link = document.createElement('a'); link.className = 'search-result'; link.href = `#${result.target}`; link.addEventListener('click', () => window.setTimeout(() => highlightTarget(document.getElementById(result.target)), 60)); const title = document.createElement('strong'); title.textContent = result.title; const snippet = document.createElement('span'); snippet.textContent = result.snippet; link.append(title, snippet); return link; })); }
+    if (resultsCount) resultsCount.textContent = `${matches.length} ${matches.length === 1 ? 'результат' : 'результатов'}`;
+    if (resultsPanel) resultsPanel.toggleAttribute('hidden', !query || matches.length === 0);
+    if (referenceIndex) referenceIndex.toggleAttribute('hidden', Boolean(query));
+    if (empty) { empty.textContent = query ? 'Ничего не найдено. Попробуйте другой запрос.' : ''; empty.toggleAttribute('hidden', !query || matches.length !== 0); }
+  };
+  search?.addEventListener('input', (event) => updateSearch(event.target.value));
+  document.querySelector('[data-search-clear]')?.addEventListener('click', () => { if (search) { search.value = ''; updateSearch(''); search.focus(); } });
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search?.focus(); }
+  });
+  document.querySelectorAll('[data-copy-code]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const label = button.querySelector('[data-copy-label]');
+      try { await navigator.clipboard.writeText(button.dataset.code || ''); if (label) label.textContent = 'Скопировано'; button.classList.add('is-copied'); setTimeout(() => { if (label) label.textContent = 'Скопировать'; button.classList.remove('is-copied'); }, 1800); } catch { if (label) label.textContent = 'Выделите код'; }
+    });
+  });
+  const copyRows = document.querySelectorAll('[data-copy-line], [data-bind-line]');
+  copyRows.forEach((row) => {
+    const copyLine = async () => {
+      try {
+        await navigator.clipboard.writeText(row.dataset.copyLine || row.dataset.bindLine || '');
+        const hint = row.querySelector('[data-copy-line-label], [data-bind-copy-label]');
+        if (hint) hint.innerHTML = 'Скопировано ✓';
+        row.classList.add('is-copied');
+        setTimeout(() => { if (hint) hint.innerHTML = 'Копировать <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M15 9V5H4v11h5"/></svg>'; row.classList.remove('is-copied'); }, 1800);
+      } catch {}
+    };
+    row.addEventListener('click', copyLine);
+    row.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); copyLine(); } });
+  });
+  document.querySelectorAll('[data-brand-image]').forEach((image) => { const fallback = image.nextElementSibling; const showFallback = () => { image.classList.add('is-hidden'); fallback?.classList.remove('is-hidden'); }; image.addEventListener('load', () => fallback?.classList.add('is-hidden'), { once: true }); image.addEventListener('error', showFallback, { once: true }); if (image.complete && image.naturalWidth === 0) showFallback(); });
+  const basePath = new URL('./', document.baseURI).pathname;
+  const assetPath = (path) => `${basePath}${path.replace(/^\/+/, '')}`;
+  const carPlaceholder = assetPath('/images/autopark/placeholder-car.svg');
+  document.querySelectorAll('[data-car-image]').forEach((image) => image.addEventListener('error', () => { image.dataset.carFailed = 'true'; image.src = carPlaceholder; }));
+  const carImages = [...document.querySelectorAll('[data-car-src]')];
+  carImages.forEach((image, index) => window.setTimeout(() => { if (image.dataset.carFailed !== 'true') { image.src = image.dataset.carSrc; image.dataset.carLoaded = 'true'; } }, 180 + index * 100));
+  document.querySelectorAll('[data-post-image]').forEach((image) => image.addEventListener('error', () => { image.src = assetPath('/images/posts/placeholder-post.svg'); }, { once: true }));
+  const topButton = document.querySelector('[data-back-top]');
+  window.addEventListener('scroll', () => topButton?.toggleAttribute('data-visible', window.scrollY > 480), { passive: true });
+  topButton?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  const openNavGroup = (group, open) => {
+    const submenu = group?.querySelector('.side-subnav, .mobile-subnav');
+    const toggle = group?.querySelector('[data-nav-toggle]');
+    if (submenu) submenu.classList.toggle('is-collapsed', !open);
+    if (toggle) toggle.setAttribute('aria-expanded', String(open));
+  };
+  document.querySelectorAll('[data-nav-toggle]').forEach((toggle) => toggle.addEventListener('click', () => { const group = toggle.closest('[data-nav-group], .mobile-nav-group'); if (group) openNavGroup(group, toggle.getAttribute('aria-expanded') !== 'true'); }));
+  const setActiveSection = (sectionId, subsectionId) => {
+    document.querySelectorAll('[data-nav-link]').forEach((link) => link.toggleAttribute('aria-current', link.dataset.navLink === sectionId));
+    document.querySelectorAll('[data-subnav-link]').forEach((link) => link.removeAttribute('aria-current'));
+    if (subsectionId) {
+      document.querySelectorAll('[data-subnav-link]').forEach((link) => link.toggleAttribute('aria-current', link.getAttribute('href') === `#${subsectionId}`));
+      document.querySelectorAll(`[data-nav-group="${sectionId}"]`).forEach((group) => openNavGroup(group, true));
+    }
+  };
+  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) { const section = entry.target.closest('[data-section]') || entry.target; setActiveSection(section.dataset.section, entry.target.id !== section.id ? entry.target.id : undefined); } }), { rootMargin: '-18% 0px -68% 0px' });
+  [...sections, ...document.querySelectorAll('.section-content h3[id], .section-content [data-nav-target]')].forEach((section) => observer.observe(section));
+  document.querySelectorAll('[data-subnav-link]').forEach((link) => link.addEventListener('click', () => { document.querySelectorAll('[data-subnav-link]').forEach((item) => item.toggleAttribute('aria-current', item === link)); }));
+  document.querySelectorAll('[data-mobile-link]').forEach((link) => link.addEventListener('click', () => { const details = link.closest('details'); if (details) details.removeAttribute('open'); }));
+  window.addEventListener('hashchange', () => highlightTarget(document.getElementById(window.location.hash.slice(1))));
+</script>

@@ -1,0 +1,30 @@
+---
+type LinkItem = { label: string; href: string; external?: boolean };
+
+const externalLinks: LinkItem[] = [
+  { label: 'Внутренний устав', href: 'https://forum.gtaprovince.ru/topic/1090396-ogibdd-p-vnutrenniy-ustav-podrazdeleniy-dps-ogibdd-po-g-privolzhsku/', external: true },
+  { label: 'Уголовный кодекс', href: 'https://forum.gtaprovince.ru/topic/639258-ugolovnyy-kodeks-respubliki/', external: true },
+  { label: 'Кодекс об Административных Правонарушениях', href: 'https://forum.gtaprovince.ru/topic/639260-kodeks-ob-administrativnyh-pravonarusheniyah-respubliki/', external: true },
+  { label: 'Правила дорожного движения', href: 'https://forum.gtaprovince.ru/topic/639262-pravila-dorozhnogo-dvizheniya-respubliki/', external: true },
+  { label: 'Федеральный Закон «О полиции»', href: 'https://forum.gtaprovince.ru/topic/724457-federalnyy-zakon-%C2%ABo-policii%C2%BB-ot-12112024-n-3-fz/', external: true },
+  { label: 'Административный регламент ГИБДД', href: 'https://forum.gtaprovince.ru/topic/724436-administrativnyy-reglament-gibdd-ot-01072020-n-1/', external: true },
+  { label: 'Приказы Министерства Внутренних Дел', href: 'https://forum.gtaprovince.ru/topic/724445-prikazy-ministerstva-vnutrennih-del-po-respublike-provinciya/', external: true },
+];
+
+const internalLinks: LinkItem[] = [
+  { label: 'Руководство отдела', href: '#leadership' },
+  { label: 'Команды и фракционные анимации', href: '#binds-commands' },
+  { label: 'Экипировка сотрудников', href: '#rules-equipment' },
+  { label: 'Бинды для сотрудников', href: '#binds' },
+  { label: 'Регламент радиопереговоров', href: '#reports' },
+  { label: 'Автопарк ДПС г. Приволжск', href: '#autopark' },
+  { label: 'Посты передвижные и стационарные', href: '#posts' },
+];
+---
+<section class="reference-index" aria-labelledby="reference-index-title" data-reference-index>
+  <div class="reference-index-heading"><span class="eyebrow">ОГИБДД-П / содержание</span><h2 id="reference-index-title">Единый информационный раздел ДПС ОГИБДД по г. Приволжску</h2><p>Нормативные документы вынесены на форум, рабочие материалы собраны ниже на этой странице.</p></div>
+  <div class="reference-columns">
+    <div class="reference-column"><h3>Нормативные документы</h3>{externalLinks.map((link) => <a class="reference-link" href={link.href} target="_blank" rel="noreferrer"><span>{link.label}</span><span class="reference-arrow">↗</span></a>)}</div>
+    <div class="reference-column"><h3>Разделы справочника</h3>{internalLinks.map((link) => <a class="reference-link" href={link.href}><span>{link.label}</span><span class="reference-arrow">→</span></a>)}</div>
+  </div>
+</section>

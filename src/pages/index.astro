@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AppShell from '../components/AppShell.astro';
+import Leadership from '../components/Leadership.astro';
+import Section from '../components/Section.astro';
+import { navigation } from '../data/navigation';
+import Binds from '../content/sections/binds.mdx';
+import Reports from '../content/sections/reports.mdx';
+import Callsigns from '../content/sections/callsigns.mdx';
+import Autopark from '../content/sections/autopark.mdx';
+import Posts from '../content/sections/posts.mdx';
+import Rules from '../content/sections/rules.mdx';
+
+const sections = [
+  { id: 'leadership', component: Leadership, title: 'Руководство отдела', description: 'Руководители подразделений и состав отдела.', index: '01' },
+  { id: 'rules', component: Rules, title: 'Экипировка сотрудников', description: 'Спецсредства и табельное оружие подразделения.', index: '02' },
+  { id: 'binds', component: Binds, title: 'Бинды и команды', description: 'Готовые команды для общения и работы на линии.', index: '03' },
+  { id: 'reports', component: Reports, title: 'Доклады', description: 'Единый формат передачи статуса, обстановки и результата.', index: '04' },
+  { id: 'autopark', component: Autopark, title: 'Автопарк', description: 'Транспорт подразделения и условия доступа.', index: '05' },
+  { id: 'posts', component: Posts, title: 'Посты', description: 'Точки несения службы и ориентиры для заступления.', index: '06' },
+  { id: 'callsigns', component: Callsigns, title: 'Позывные', description: 'Простая система обозначений для чистого эфира.', index: '07' },
+];
+---
+<BaseLayout>
+  <AppShell items={navigation}>
+    {sections.map(({ component: Component, ...section }) => <Section {...section}><Component /></Section>)}
+  </AppShell>
+</BaseLayout>

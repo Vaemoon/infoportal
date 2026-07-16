@@ -1,0 +1,16 @@
+---
+import Icon from './Icon.astro';
+import type { NavigationItem } from '../data/navigation';
+type Props = { items: NavigationItem[] };
+const { items } = Astro.props;
+---
+<header class="mobile-header">
+  <a class="brand brand-mobile" href="#top"><span class="brand-mark"><img src="https://i.imgur.com/P4ei9ra.png" alt="Логотип ОГИБДД-П" data-brand-image /><span class="brand-fallback is-hidden"><Icon name="badge" size={19} /></span></span><span><strong>ОГИБДД-П</strong><small>информационный раздел</small></span></a>
+  <details class="mobile-menu">
+    <summary aria-label="Открыть меню"><Icon name="menu" size={20} /></summary>
+    <div class="mobile-menu-panel">
+      <div class="nav-label">Разделы справочника</div>
+      {items.map((item) => <div class="mobile-nav-group" data-nav-group={item.id}><div class="mobile-parent-row"><a href={`#${item.id}`} data-mobile-link data-nav-link={item.id}>{item.shortLabel}</a>{item.children && <button class="nav-toggle" type="button" data-nav-toggle aria-expanded={item.id === 'leadership' ? 'true' : 'false'} aria-label={`Раскрыть подразделы: ${item.label}`}><Icon name="chevron" size={15} /></button>}</div>{item.children && <div class={`mobile-subnav ${item.id !== 'leadership' ? 'is-collapsed' : ''}`}>{item.children.map((child) => <a href={`#${child.id}`} data-mobile-link data-subnav-link>{child.label}</a>)}</div>}</div>)}
+    </div>
+  </details>
+</header>

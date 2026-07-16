@@ -1,0 +1,16 @@
+---
+import Icon from './Icon.astro';
+type Props = { code: string; label?: string };
+const { code, label = 'Команда' } = Astro.props;
+const displayCode = code.replace(/\\n/g, '\n');
+const codeLines = displayCode.split('\n').map((line) => line.trim()).filter(Boolean);
+---
+<div class="copy-stack" aria-label={label}>
+  <div class="copy-stack-title"><span>{label}</span><small>нажмите на строку, чтобы скопировать</small></div>
+  {codeLines.map((line) => (
+    <div class="copy-line" data-copy-line={line} role="button" tabindex="0" aria-label={`Скопировать: ${line}`}>
+      <code>{line}</code>
+      <span class="copy-line-hint" data-copy-line-label>Копировать <Icon name="copy" size={14} /></span>
+    </div>
+  ))}
+</div>

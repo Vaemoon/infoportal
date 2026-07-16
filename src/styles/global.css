@@ -111,7 +111,7 @@ button { cursor: pointer; }
   .mobile-menu-panel { top: calc(100% + 8px); max-height: calc(100vh - 84px); }
   .mobile-menu-panel a { min-height: 44px; padding: 11px 6px; }
   .mobile-menu-panel .mobile-parent-row > a { align-items: center; justify-content: flex-start; gap: 10px; }
-  .mobile-menu-panel .mobile-parent-row .nav-icon { flex: 0 0 22px; color: var(--faint); font: inherit; }
+  .mobile-menu-panel .mobile-parent-row .nav-icon { flex: 0 0 24px; color: var(--faint); font: inherit; }
   .mobile-menu-panel .mobile-parent-row .nav-copy { flex: 1; color: var(--muted); font-size: 13px; line-height: 1.3; }
   .mobile-menu-panel .mobile-parent-row > a[aria-current="true"] { color: var(--text); }
   .mobile-menu-panel .mobile-parent-row > a[aria-current="true"] .nav-icon { color: var(--accent); }

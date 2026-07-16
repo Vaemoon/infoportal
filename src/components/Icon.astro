@@ -1,5 +1,5 @@
 ---
-type IconName = 'book' | 'command' | 'radio' | 'car' | 'map' | 'badge' | 'file' | 'help' | 'search' | 'menu' | 'arrow-up' | 'copy' | 'check' | 'chevron';
+type IconName = 'book' | 'command' | 'radio' | 'car' | 'map' | 'badge' | 'file' | 'help' | 'search' | 'menu' | 'arrow-up' | 'copy' | 'check' | 'chevron' | 'section-leadership' | 'section-rules' | 'section-binds' | 'section-reports' | 'section-autopark' | 'section-posts' | 'section-callsigns';
 type Props = { name: IconName; size?: number; strokeWidth?: number };
 const { name, size = 18, strokeWidth = 1.8 } = Astro.props;
 const paths: Record<IconName, string> = {
@@ -17,6 +17,13 @@ const paths: Record<IconName, string> = {
   copy: '<rect x="9" y="9" width="11" height="11" rx="1"/><path d="M15 9V5H4v11h5"/>',
   check: '<path d="m5 12 4 4L19 6"/>',
   chevron: '<path d="m7 10 5 5 5-5"/>',
+  'section-leadership': '<polyline points="4 12 12 5 20 12"/><polyline points="4 19 12 12 20 19"/>',
+  'section-rules': '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+  'section-binds': '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+  'section-reports': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>',
+  'section-autopark': '<path d="M4 10l1.5-4.5A2 2 0 0 1 7.4 4h9.2a2 2 0 0 1 1.9 1.5L20 10"/><rect x="2" y="10" width="20" height="6" rx="2" ry="2"/><path d="M5 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M16 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><line x1="7" y1="13" x2="9" y2="13"/><line x1="15" y1="13" x2="17" y2="13"/>',
+  'section-posts': '<polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>',
+  'section-callsigns': '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',
 };
 ---
 <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={paths[name]}></svg>

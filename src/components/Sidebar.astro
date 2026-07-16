@@ -15,7 +15,7 @@ const { items } = Astro.props;
     {items.map((item) => (
       <div class="nav-group" data-nav-group={item.id}>
         <div class="nav-parent"><a href={`#${item.id}`} data-nav-link={item.id} aria-current={item.id === 'leadership' ? 'true' : undefined}>
-          <span class="nav-icon"><Icon name={item.id === 'rules' ? 'book' : item.id === 'binds' ? 'command' : item.id === 'reports' ? 'radio' : item.id === 'autopark' ? 'car' : item.id === 'posts' ? 'map' : item.id === 'callsigns' ? 'badge' : 'help'} size={16} /></span>
+          <span class="nav-icon"><Icon name={item.id === 'leadership' ? 'section-leadership' : item.id === 'rules' ? 'section-rules' : item.id === 'binds' ? 'section-binds' : item.id === 'reports' ? 'section-reports' : item.id === 'autopark' ? 'section-autopark' : item.id === 'posts' ? 'section-posts' : item.id === 'callsigns' ? 'section-callsigns' : 'help'} size={24} strokeWidth={2} /></span>
           <span class="nav-copy"><span>{item.label}</span></span>
         </a>{item.children && <button class="nav-toggle" type="button" data-nav-toggle aria-expanded={item.id === 'leadership' ? 'true' : 'false'} aria-label={`Раскрыть подразделы: ${item.label}`}><Icon name="chevron" size={15} /></button>}</div>
         {item.children && <div class={`side-subnav ${item.id !== 'leadership' ? 'is-collapsed' : ''}`}>{item.children.map((child) => <a href={`#${child.id}`} data-subnav-link>{child.label}</a>)}</div>}

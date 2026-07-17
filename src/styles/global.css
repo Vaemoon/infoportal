@@ -162,3 +162,16 @@ button { cursor: pointer; }
   .leadership-rows { grid-template-columns: 1fr; gap: 18px; }
   .leadership-rows::before, .leadership-rows .leadership-department::before { display: none; }
 }
+
+/* Compact leadership chart: people cards stay visible, department shells do not. */
+.leadership-chief { width: min(280px, 100%); padding: 11px 12px; }
+.leadership-chief .leadership-name { font-size: 16px; }
+.leadership-chief .leadership-position { font-size: 12px; }
+.leadership-chief .leadership-rank { font-size: 10px; }
+.leadership-trunk { height: 24px; }
+.leadership-rows .leadership-row::before { display: none; }
+.leadership-rows .leadership-department { border: 0; border-radius: 0; background: transparent; }
+.leadership-rows .leadership-department-header { display: none; }
+.leadership-rows .leadership-chain { padding: 0; }
+.leadership-rows .leadership-department::before { z-index: 0; }
+.leadership-rows .leadership-person { position: relative; z-index: 1; }

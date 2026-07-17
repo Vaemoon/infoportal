@@ -1,16 +1,11 @@
 ---
-import Icon from './Icon.astro';
-
 type Props = { name: string; image?: string; access: string; purpose: string };
 const { name, image, access, purpose } = Astro.props;
 const id = `equipment-${name.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, '-')}`;
 ---
 
-<article class="equipment-card" id={id} data-search-item>
-  <div class="equipment-media">
-    <span class="equipment-fallback" aria-hidden="true"><Icon name="badge" size={32} /></span>
-    {image && <img src={image} alt={name} loading="lazy" decoding="async" data-equipment-image />}
-  </div>
+<article class={`equipment-card ${image ? 'has-image' : ''}`} id={id} data-search-item>
+  {image && <div class="equipment-media"><img src={image} alt={name} loading="lazy" decoding="async" data-equipment-image /></div>}
   <div class="equipment-body">
     <strong class="equipment-name">{name}</strong>
     <dl class="equipment-meta">

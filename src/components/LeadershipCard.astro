@@ -1,0 +1,9 @@
+---
+type Person = { id: string; name: string; position: string; rank?: string; vacant?: boolean };
+type Props = { person: Person };
+
+const { person } = Astro.props;
+const vkSearch = (name: string) => `https://vk.com/search?c%5Bq%5D=${encodeURIComponent(name)}&c%5Bsection%5D=people`;
+---
+
+{person.vacant ? <div class="org-card is-vacant" id={`leadership-${person.id}`} data-search-item><span class="org-name">{person.name}</span><span class="org-position">{person.position}</span>{person.rank && <span class="org-rank">{person.rank}</span>}</div> : <a class="org-card" id={`leadership-${person.id}`} data-search-item href={vkSearch(person.name)} target="_blank" rel="noreferrer"><span class="org-name">{person.name}</span><span class="org-position">{person.position}</span>{person.rank && <span class="org-rank">{person.rank}</span>}</a>}

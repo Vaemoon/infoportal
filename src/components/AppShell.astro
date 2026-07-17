@@ -38,7 +38,7 @@ const { items } = Astro.props;
   const getText = (element) => element.textContent.replace(/\s+/g, ' ').trim();
   const getSnippet = (text, query) => { const clean = text.replace(/\s+/g, ' ').trim(); const index = clean.toLocaleLowerCase().indexOf(query); if (index < 0) return clean.slice(0, 150); return `${index > 48 ? '…' : ''}${clean.slice(Math.max(0, index - 48), index + 112)}${clean.length > index + 112 ? '…' : ''}`; };
   const ensureSearchId = (element) => { if (!element.id) element.id = `search-target-${++generatedSearchId}`; return element.id; };
-  const getSearchTitle = (element) => element.querySelector('h3, .leadership-name, .copy-line code, .bind-line code, strong')?.textContent?.trim() || getText(element).slice(0, 90);
+  const getSearchTitle = (element) => element.querySelector('h3, .org-name, .leadership-name, .copy-line code, .bind-line code, strong')?.textContent?.trim() || getText(element).slice(0, 90);
   const highlightTarget = (target) => { if (!target) return; target.classList.add('search-hit'); window.setTimeout(() => target.classList.remove('search-hit'), 1800); };
   const updateSearch = (value) => {
     const query = value.trim().toLocaleLowerCase();

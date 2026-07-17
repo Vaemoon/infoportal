@@ -194,20 +194,22 @@ button { cursor: pointer; }
 /* Organizational chart */
 #leadership .section-content { max-width: none; }
 .org-chart { --org-line: #4b5a66; --org-gap: 10px; margin: 20px 0 10px; }
-.org-root { display: flex; flex-direction: column; align-items: center; }
-.org-root > .org-card { width: min(260px, 100%); min-height: 64px; padding: 9px 14px; }
+.org-root { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1.45fr) minmax(0, 1fr); column-gap: var(--org-gap); row-gap: 0; align-items: start; }
+.org-root > .org-card { grid-column: 3; grid-row: 1; width: calc(100% / 1.45); height: 72px; min-height: 72px; justify-self: center; padding: 9px 14px; }
 .org-root .org-name { font-size: 15px; }
 .org-root .org-position { font-size: 11px; }
 .org-root .org-rank { font-size: 9.5px; }
-.org-root-stem { display: block; width: 1px; height: 18px; background: var(--org-line); }
-.org-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1.45fr) minmax(0, .9fr); gap: var(--org-gap); padding-top: 18px; align-items: start; }
+.org-root-stem { display: block; grid-column: 3; grid-row: 2; justify-self: center; width: 1px; height: 18px; background: var(--org-line); }
+.org-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1.45fr) minmax(0, 1fr); gap: var(--org-gap); padding-top: 18px; align-items: start; }
 .org-column { position: relative; min-width: 0; }
 .org-column::before { position: absolute; top: -18px; left: 50%; width: 1px; height: 18px; background: var(--org-line); content: ''; }
 .org-column::after { position: absolute; top: -18px; right: calc(var(--org-gap) / -2); left: calc(var(--org-gap) / -2); height: 1px; background: var(--org-line); content: ''; }
 .org-column:first-child::after { left: 50%; }
 .org-column:last-child::after { right: 50%; }
 .org-chain, .org-branch { display: grid; gap: 14px; }
+.org-column-ob > .org-chain, .org-column-cps > .org-chain { width: calc(100% / 1.45); margin-inline: auto; }
 .org-card { position: relative; z-index: 1; display: flex; min-width: 0; min-height: 64px; flex-direction: column; justify-content: center; border: 1px solid var(--line-soft); border-radius: 6px; background: #11171c; padding: 7px 6px; text-align: center; transition: border-color .15s ease, background .15s ease; }
+.org-chain > .org-card { height: 72px; min-height: 72px; }
 .org-card:hover { border-color: #53697c; background: #18222b; }
 .org-card.is-vacant { border-style: dashed; }
 .org-name { display: block; max-width: 100%; color: var(--text); font-size: 10.5px; font-weight: 700; line-height: 1.15; letter-spacing: -.02em; white-space: nowrap; }
@@ -215,22 +217,24 @@ button { cursor: pointer; }
 .org-rank { display: block; margin-top: 4px; color: var(--faint); font-size: 8.8px; line-height: 1.2; }
 .org-card.is-vacant .org-name { color: var(--danger); }
 .org-chain > .org-card + .org-card::before, .org-branch > .org-card + .org-card::before { position: absolute; top: -14px; left: 50%; width: 1px; height: 14px; background: var(--org-line); content: ''; }
-.org-branches { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-top: 18px; }
+.org-branches { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-items: start; padding-top: 18px; }
 .org-branches::before { position: absolute; top: 0; left: 50%; width: 1px; height: 8px; background: var(--org-line); content: ''; }
-.org-branch { position: relative; min-width: 0; }
+.org-branch { position: relative; min-width: 0; align-content: start; }
 .org-branch::before { position: absolute; top: -10px; left: 50%; width: 1px; height: 10px; background: var(--org-line); content: ''; }
 .org-branch::after { position: absolute; top: -10px; right: -4px; left: -4px; height: 1px; background: var(--org-line); content: ''; }
 .org-branch:first-child::after { left: 50%; }
 .org-branch:last-child::after { right: 50%; }
-.org-branch .org-card { min-height: 68px; padding-inline: 4px; }
+.org-branch .org-card { height: 68px; min-height: 68px; padding-inline: 4px; }
 .org-branch .org-name { font-size: 9px; letter-spacing: -.035em; }
 .org-branch .org-position { font-size: 8.6px; }
 .org-branch .org-rank { font-size: 8.3px; }
 
 @media (max-width: 1150px) {
   .org-root-stem, .org-column::before, .org-column::after { display: none; }
-  .org-root { margin-bottom: 18px; }
+  .org-root { display: flex; flex-direction: column; align-items: center; margin-bottom: 18px; }
+  .org-root > .org-card { width: min(260px, 100%); }
   .org-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding-top: 0; }
+  .org-column-ob > .org-chain, .org-column-cps > .org-chain { width: 100%; }
   .org-name { font-size: 11px; }
   .org-branch .org-name { font-size: 10px; }
 }

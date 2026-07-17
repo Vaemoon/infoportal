@@ -175,3 +175,18 @@ button { cursor: pointer; }
 .leadership-rows .leadership-chain { padding: 0; }
 .leadership-rows .leadership-department::before { z-index: 0; }
 .leadership-rows .leadership-person { position: relative; z-index: 1; }
+
+.leadership-row-three .leadership-department:nth-child(3) .leadership-chain,
+.leadership-row-two .leadership-department:first-child .leadership-chain { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; row-gap: 16px; }
+.leadership-row-three .leadership-department:nth-child(3) .leadership-person,
+.leadership-row-two .leadership-department:first-child .leadership-person { margin-top: 0; }
+.leadership-row-three .leadership-department:nth-child(3) .leadership-person:nth-child(1),
+.leadership-row-three .leadership-department:nth-child(3) .leadership-person:nth-child(2),
+.leadership-row-two .leadership-department:first-child .leadership-person:nth-child(1) { grid-column: 1 / -1; }
+.leadership-row-three .leadership-department:nth-child(3) .leadership-person:nth-child(3),
+.leadership-row-two .leadership-department:first-child .leadership-person:nth-child(2) { grid-column: 1; }
+.leadership-row-three .leadership-department:nth-child(3) .leadership-person:nth-child(4),
+.leadership-row-two .leadership-department:first-child .leadership-person:nth-child(3) { grid-column: 2; }
+.leadership-row-two .leadership-department:first-child .leadership-person:nth-child(4) { grid-column: 1; }
+.leadership-row-three .leadership-department:nth-child(3) .leadership-person:nth-child(3)::after,
+.leadership-row-two .leadership-department:first-child .leadership-person:nth-child(2)::after { position: absolute; top: -8px; left: 50%; width: calc(100% + 8px); height: 1px; background: #465560; content: ''; }

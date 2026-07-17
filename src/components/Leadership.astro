@@ -60,6 +60,10 @@ const columns: OrgColumn[] = [
     <span class="org-root-stem" aria-hidden="true"></span>
   </div>
 
+  <div class="org-main-rail" aria-hidden="true">
+    {columns.map(() => <span></span>)}
+  </div>
+
   <div class="org-columns">
     {columns.map((column) => (
       <section class={`org-column org-column-${column.id}`} aria-label={column.label}>

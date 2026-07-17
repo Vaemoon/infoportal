@@ -1,5 +1,5 @@
 ---
-type IconName = 'book' | 'command' | 'radio' | 'car' | 'map' | 'badge' | 'file' | 'help' | 'search' | 'menu' | 'arrow-up' | 'copy' | 'check' | 'chevron' | 'section-leadership' | 'section-rules' | 'section-binds' | 'section-reports' | 'section-autopark' | 'section-posts' | 'section-callsigns';
+type IconName = 'book' | 'command' | 'radio' | 'car' | 'map' | 'badge' | 'file' | 'help' | 'search' | 'menu' | 'arrow-up' | 'copy' | 'check' | 'chevron' | 'speedometer' | 'stopwatch' | 'finish' | 'section-leadership' | 'section-rules' | 'section-binds' | 'section-reports' | 'section-autopark' | 'section-posts' | 'section-callsigns';
 type Props = { name: IconName; size?: number; strokeWidth?: number };
 const { name, size = 18, strokeWidth = 1.8 } = Astro.props;
 const paths: Record<IconName, string> = {
@@ -17,6 +17,9 @@ const paths: Record<IconName, string> = {
   copy: '<rect x="9" y="9" width="11" height="11" rx="1"/><path d="M15 9V5H4v11h5"/>',
   check: '<path d="m5 12 4 4L19 6"/>',
   chevron: '<path d="m7 10 5 5 5-5"/>',
+  speedometer: '<path d="M4 17a8 8 0 1 1 16 0"/><path d="m12 17 4-5"/><path d="M7 17h10"/>',
+  stopwatch: '<circle cx="12" cy="14" r="7"/><path d="M12 7V3M9 3h6M12 14l3-2"/>',
+  finish: '<path d="M5 21V4M5 5h10l-2 3 2 3H5M9 21h8"/>',
   'section-leadership': '<polyline points="4 12 12 5 20 12"/><polyline points="4 19 12 12 20 19"/>',
   'section-rules': '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
   'section-binds': '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',

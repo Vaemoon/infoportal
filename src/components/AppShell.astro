@@ -112,6 +112,7 @@ const { items } = Astro.props;
     preload.src = source;
   }, 180 + index * 100));
   document.querySelectorAll('[data-post-image]').forEach((image) => image.addEventListener('error', () => { image.src = assetPath('/images/posts/placeholder-post.svg'); }, { once: true }));
+  document.querySelectorAll('[data-equipment-image]').forEach((image) => image.addEventListener('error', () => { image.classList.add('is-hidden'); }, { once: true }));
   const topButton = document.querySelector('[data-back-top]');
   window.addEventListener('scroll', () => topButton?.toggleAttribute('data-visible', window.scrollY > 480), { passive: true });
   topButton?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
